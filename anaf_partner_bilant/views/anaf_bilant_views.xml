@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="anaf_bilant_view_list" model="ir.ui.view">
+        <field name="name">anaf.bilant.list</field>
+        <field name="model">anaf.bilant</field>
+        <field name="arch" type="xml">
+            <list string="ANAF Balance Sheets" create="false" edit="false">
+                <field name="year"/>
+                <field name="cui"/>
+                <field name="company_name"/>
+                <field name="turnover" sum="Total"/>
+                <field name="employees" sum="Total"/>
+                <field name="gross_result" sum="Total"/>
+                <field name="margin" optional="show"/>
+                <field name="caen" optional="hide"/>
+                <field name="fetch_date" optional="hide"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="anaf_bilant_view_form" model="ir.ui.view">
+        <field name="name">anaf.bilant.form</field>
+        <field name="model">anaf.bilant</field>
+        <field name="arch" type="xml">
+            <form string="ANAF Balance Sheet" create="false" edit="false">
+                <sheet>
+                    <group>
+                        <group string="Identification">
+                            <field name="cui"/>
+                            <field name="year"/>
+                            <field name="company_name"/>
+                            <field name="caen"/>
+                            <field name="caen_name"/>
+                            <field name="partner_id"/>
+                            <field name="fetch_date"/>
+                        </group>
+                        <group string="Indicators">
+                            <field name="turnover"/>
+                            <field name="employees"/>
+                            <field name="gross_result"/>
+                            <field name="net_result"/>
+                            <field name="margin"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Raw ANAF Payload" name="payload">
+                            <field name="payload" readonly="1"/>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="anaf_bilant_action" model="ir.actions.act_window">
+        <field name="name">ANAF Balance Sheets</field>
+        <field name="res_model">anaf.bilant</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <menuitem id="anaf_bilant_menu"
+              name="ANAF Balance Sheets"
+              parent="base.menu_custom"
+              action="anaf_bilant_action"
+              sequence="90"/>
+
+</odoo>

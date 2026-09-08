@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!--
+      The x_studio_* financial fields are intentionally NOT added here: Studio
+      already places them on the form, and repeating them would render them
+      twice. This view only exposes the provenance of those figures plus the
+      manual refresh action.
+    -->
+    <record id="res_partner_view_form_anaf_bilant" model="ir.ui.view">
+        <field name="name">res.partner.form.anaf.bilant</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//notebook" position="inside">
+                <page string="ANAF" name="anaf_bilant" invisible="not is_company">
+                    <div class="oe_button_box">
+                        <button name="action_anaf_bilant_fetch"
+                                type="object"
+                                string="Fetch from ANAF"
+                                icon="fa-download"
+                                class="btn-primary"/>
+                    </div>
+                    <group>
+                        <group string="Last Synchronisation">
+                            <field name="anaf_bilant_state"/>
+                            <field name="anaf_bilant_year"/>
+                            <field name="anaf_bilant_cui"/>
+                            <field name="anaf_bilant_sync_date"/>
+                            <field name="anaf_bilant_message"
+                                   invisible="not anaf_bilant_message"/>
+                        </group>
+                    </group>
+                    <field name="anaf_bilant_ids" nolabel="1">
+                        <list create="false" edit="false">
+                            <field name="year"/>
+                            <field name="turnover"/>
+                            <field name="employees"/>
+                            <field name="gross_result"/>
+                            <field name="margin"/>
+                            <field name="fetch_date"/>
+                        </list>
+                    </field>
+                </page>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="res_partner_view_search_anaf_bilant" model="ir.ui.view">
+        <field name="name">res.partner.search.anaf.bilant</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_res_partner_filter"/>
+        <field name="arch" type="xml">
+            <xpath expr="//search" position="inside">
+                <filter name="anaf_to_sync"
+                        string="ANAF: queued"
+                        domain="[('anaf_bilant_state', '=', 'to_sync')]"/>
+                <filter name="anaf_error"
+                        string="ANAF: error"
+                        domain="[('anaf_bilant_state', '=', 'error')]"/>
+                <filter name="anaf_no_data"
+                        string="ANAF: no data"
+                        domain="[('anaf_bilant_state', '=', 'no_data')]"/>
+                <group expand="0" string="Group By">
+                    <filter name="group_anaf_state"
+                            string="ANAF Status"
+                            context="{'group_by': 'anaf_bilant_state'}"/>
+                </group>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>
