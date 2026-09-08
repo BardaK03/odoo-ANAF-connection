@@ -71,9 +71,20 @@ call with the `skip_anaf_bilant` context key.
 
 ## Install
 
+This repository **is** the Odoo module: `__manifest__.py` sits at the root.
+Odoo derives a module's technical name from its directory name, so the clone
+target must be `anaf_partner_bilant` regardless of the repository name.
+
 ```bash
-# copy the folder into your addons path, then
+cd /path/to/your/addons
+git clone https://github.com/BardaK03/anaf_partner_bilant.git anaf_partner_bilant
 odoo-bin -c odoo.conf -d <database> -i anaf_partner_bilant --stop-after-init
+```
+
+Then make sure the parent directory is on `addons_path` in `odoo.conf`:
+
+```ini
+addons_path = /path/to/odoo/addons,/path/to/your/addons
 ```
 
 ## Test
