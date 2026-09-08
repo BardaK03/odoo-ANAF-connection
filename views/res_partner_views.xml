@@ -51,22 +51,33 @@
         <field name="model">res.partner</field>
         <field name="inherit_id" ref="base.view_res_partner_filter"/>
         <field name="arch" type="xml">
-            <xpath expr="//search" position="inside">
-                <filter name="anaf_to_sync"
-                        string="ANAF: queued"
-                        domain="[('anaf_bilant_state', '=', 'to_sync')]"/>
-                <filter name="anaf_error"
-                        string="ANAF: error"
-                        domain="[('anaf_bilant_state', '=', 'error')]"/>
-                <filter name="anaf_no_data"
-                        string="ANAF: no data"
-                        domain="[('anaf_bilant_state', '=', 'no_data')]"/>
-                <group expand="0" string="Group By">
+            <data>
+                <xpath expr="//search" position="inside">
+                    <filter name="anaf_to_sync"
+                            string="ANAF: queued"
+                            domain="[('anaf_bilant_state', '=', 'to_sync')]"/>
+                    <filter name="anaf_error"
+                            string="ANAF: error"
+                            domain="[('anaf_bilant_state', '=', 'error')]"/>
+                    <filter name="anaf_no_data"
+                            string="ANAF: no data"
+                            domain="[('anaf_bilant_state', '=', 'no_data')]"/>
+                </xpath>
+                <!--
+                  Odoo 19 validates search views against base/rng/common.rng,
+                  whose <group> attribute whitelist is colspan/rowspan/fill/
+                  height/width/name/color/invisible - no `expand`, no `string`.
+                  The pre-18 idiom <group expand="0" string="Group By"> is
+                  therefore rejected. The base view already ships a Group By
+                  container, so extend that instead of declaring a new one;
+                  the filter also lands in the same menu section as Odoo's own.
+                -->
+                <xpath expr="//group[@name='group_by']" position="inside">
                     <filter name="group_anaf_state"
                             string="ANAF Status"
                             context="{'group_by': 'anaf_bilant_state'}"/>
-                </group>
-            </xpath>
+                </xpath>
+            </data>
         </field>
     </record>
 
